@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	                    http://www.springframework.org/schema/beans/spring-beans-4.1.xsd 
+	                    http://www.springframework.org/schema/tx 
+	                    http://www.springframework.org/schema/tx/spring-tx.xsd
+					    http://www.springframework.org/schema/context
+					    http://www.springframework.org/schema/context/spring-context.xsd"
+	xmlns:tx="http://www.springframework.org/schema/tx">
+
+    <bean id="loginActionBean" class="com.jiro.action.LoginAction" scope="prototype">
+        <property name="blogUser" ref="blogUser" />
+        <property name="blogUserService" ref="blogUserService" />
+    </bean>
+    
+    <bean id="registerActionBean" class="com.jiro.action.RegisterUserAction" scope="prototype">
+        <property name="blogUserService" ref="blogUserService" />
+    </bean>
+    
+    <bean id="logoutActionBean" class="com.jiro.action.LogoutAction"  scope="prototype"/>
+    
+    <bean id="postPreviewActionBean" class="com.jiro.action.PostPreviewAction" scope="prototype">
+        <property name="blogPostService" ref="blogPostService" />
+    </bean>
+    
+    <bean id="newBlogPost" class="com.jiro.action.NewBlogPostAction" scope="prototype">
+        <property name="blogPostService" ref="blogPostService" />
+    </bean>
+    
+    <bean id="postContentActionBean" class="com.jiro.action.PostContentAction" scope="prototype">
+        <property name="blogPostService" ref="blogPostService" />
+        <property name="blogCommentService" ref="blogCommentService" />
+    </bean>
+    
+    <bean id="postCommentActionBean" class="com.jiro.action.PostCommentAction" scope="prototype">
+        <property name="blogCommentService" ref="blogCommentService" />
+    </bean>
+    
+    <bean id="userCommentsActionBean" class="com.jiro.action.UserCommentsAction" scope="prototype">
+        <property name="blogCommentService" ref="blogCommentService" />
+    </bean>
+    
+    <bean id="userPostsActionBean" class="com.jiro.action.UserPostsAction" scope="prototype">
+        <property name="blogPostService" ref="blogPostService" />
+    </bean>
+    
+    <bean id="deletePostActionBean" class="com.jiro.action.DeletePostAction" scope="prototype">
+        <property name="blogPostService" ref="blogPostService" />
+    </bean>
+            
+    <bean id="deleteCommentActionBean" class="com.jiro.action.DeleteCommentAction" scope="prototype">
+        <property name="blogCommentService" ref="blogCommentService" />
+    </bean>
+    
+	<context:component-scan base-package="com.jiro.dao" />
+	<context:component-scan base-package="com.jiro.service" />
+        
+	<bean id="genericDao" abstract="true" class="com.jiro.dao.GenericDaoImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	<bean id="blogUserService" class="com.jiro.service.BlogUserServiceImpl">
+		<property name="blogUserDao">
+			<ref bean="blogUserDao"/>
+		</property>
+	</bean>
+	
+	<bean id="blogPostService" class="com.jiro.service.BlogPostServiceImpl">
+		<property name="blogPostDao">
+			<ref bean="blogPostDao"/>
+		</property>
+	</bean>
+	
+	<bean id="blogCommentService" class="com.jiro.service.BlogCommentServiceImpl">
+		<property name="blogCommentDao">
+			<ref bean="blogCommentDao"/>
+		</property>
+	</bean>
+    
+    <bean id="blogUser" class="com.jiro.model.BlogUser" />
+    <bean id="blogPost" class="com.jiro.model.BlogPost" />
+    <bean id="blogComment" class="com.jiro.model.BlogComment" />
+    
+    <bean id="blogUserDao" class="com.jiro.dao.BlogUserDaoImpl" />
+    <bean id="blogPostDao" class="com.jiro.dao.BlogPostDaoImpl" />
+    <bean id="blogCommentDao" class="com.jiro.dao.BlogCommentDaoImpl" />
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" p:dataSource-ref="dataSource">		
+		<property name="packagesToScan" value="com.jiro.model"></property>
+	    <property name="hibernateProperties">
+	        <props>
+	            <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+	            <prop key="hibernate.show_sql">true</prop>
+	        </props>
+	    </property>
+	</bean>
+    
+    
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+		
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource "
+		abstract="false" lazy-init="default" autowire="default"
+		p:url="jdbc:mysql://localhost:3306/blog_site"
+		p:driverClassName="com.mysql.jdbc.Driver" p:username="root"
+		p:password="12345">
+	</bean>
+</beans>

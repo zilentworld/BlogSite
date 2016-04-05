@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+ 
+<struts>
+    <constant name="struts.devMode" value="true" />
+	<constant name="struts.action.extension" value=","/>
+    <package name="test" extends="struts-default" namespace="/">
+            
+        <result-types>
+            <result-type name="tiles" class="org.apache.struts2.views.tiles.TilesResult" />
+        </result-types>
+        
+        <interceptors>
+        	<interceptor name="archive" class="com.jiro.action.ArchiveInterceptor" />
+        	<interceptor-stack name="blogSiteInterceptor">
+        		<interceptor-ref name="defaultStack" />
+        		<interceptor-ref name="archive" />
+        		
+        	</interceptor-stack>
+        </interceptors>
+        
+        <default-interceptor-ref name="blogSiteInterceptor" />
+            
+        <action name="login" class="loginActionBean" >
+            <result name="input" type="tiles">/login.tiles</result>
+            <result name="none" type="tiles">/login.tiles</result>
+            <result name="login" type="tiles">/login.tiles</result>
+            <result name="success" type="redirectAction">postPreviewAction</result>
+            <result name="error" type="tiles">/login.tiles</result>
+        </action>
+        
+        <action name="doLogin" class="loginActionBean" method="postLogin">
+            <result name="login" type="tiles">/login.tiles</result>
+            <result name="input" type="tiles">/login.tiles</result>
+        </action>
+        
+        <action name="logout" class="logoutActionBean" >
+            <result name="success" type="redirectAction">postPreviewAction</result>
+        </action>
+        
+        <action name="postPreviewAction" class="postPreviewActionBean">
+            <result name="success" type="tiles">/postpreview.tiles</result>
+        </action>
+        
+        <action name="postContentActionBean" class="postContentActionBean">
+            <result name="success" type="tiles">/postcontent.tiles</result>
+            <result name="error" type="tiles">/login.failed.tiles</result>
+        </action>
+        
+        <action name="newBlogPost" class="newBlogPost" method="createPost">
+            <result name="success" type="tiles">/newpost.tiles</result>
+        </action>
+        
+        <action name="processBlogPost" class="newBlogPost">
+            <result name="success" type="redirectAction">
+            	<param name="actionName">postContentActionBean</param>
+            	<param name="postId">${postId}</param>
+            </result>
+            <result name="error" type="redirectAction">newBlogPost</result>
+        </action>
+        
+        <action name="postComment" class="postCommentActionBean">
+            <result name="success" type="redirectAction">
+            	<param name="actionName">postContentActionBean</param>
+            	<param name="postId">${blogComment.blogPost.blogPostId}</param>
+            </result>
+            <result name="error" type="tiles">/login.failed.tiles</result>
+        </action>
+        
+        <action name="userComments" class="userCommentsActionBean">
+            <result name="success" type="tiles">/usercomments.tiles</result>
+        </action>
+        
+        <action name="userPosts" class="userPostsActionBean">
+            <result name="success" type="tiles">/userposts.tiles</result>
+        </action>
+        
+        <action name="showRegister" class="registerActionBean" method="postRegister">
+            <result name="success" type="tiles">/registeruser.tiles</result>
+            <result name="input" type="tiles">/registeruser.tiles</result>
+        </action>
+        
+        <action name="processRegister" class="registerActionBean">
+            <result name="success" type="redirectAction">
+            	<param name="actionName">doLogin</param>
+            	<param name="msg">${msg}</param>
+            </result>
+        </action>
+        
+        <action name="deletePost" class="deletePostActionBean">
+        	<result name="success" type="redirectAction">postPreviewAction</result>
+        </action>
+        
+        <action name="deleteComment" class="deleteCommentActionBean">
+            <result name="success" type="redirectAction">
+            	<param name="actionName">postContentActionBean</param>
+            	<param name="postId">${postId}</param>
+            </result>
+        </action>
+        
+    </package>
+</struts>
