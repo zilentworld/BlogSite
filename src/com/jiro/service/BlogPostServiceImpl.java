@@ -1,11 +1,12 @@
 package com.jiro.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jiro.dao.BlogPostDao;
@@ -74,8 +75,25 @@ public class BlogPostServiceImpl implements BlogPostService {
     }
 
     @SuppressWarnings("rawtypes")
-    public List getBlogPostData() {
-        return blogPostDao.getBlogPostData();
+    public List getBlogPostDataProjection(String... projectionVars) {
+        if(projectionVars.length >= 2) {
+            ProjectionList projectionList = Projections.projectionList();
+            try {
+                for(int a = 0; a < projectionVars.length ; a += 2) {
+                    switch (projectionVars[a].toUpperCase()) {
+                        case "MAX": projectionList.add(Projections.max(projectionVars[a+1]));
+                                    break;
+                        case "COUNT" : projectionList.add(Projections.count(projectionVars[a+1]));
+                        default: break;
+                    }
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                return null;
+            }    
+            return blogPostDao.getBlogPostData(projectionList);
+        } else {
+            return null;
+        }
     }
 
 }

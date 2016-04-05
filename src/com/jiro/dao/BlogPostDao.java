@@ -3,6 +3,8 @@ package com.jiro.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.criterion.ProjectionList;
+
 import com.jiro.model.ArchiveDTO;
 import com.jiro.model.BlogPost;
 
@@ -18,5 +20,5 @@ public interface BlogPostDao extends GenericDao {
     
     public List<ArchiveDTO> getBlogPostArchive();
     
-    public List getBlogPostData();
+    public List getBlogPostData(ProjectionList projectionList);
 }

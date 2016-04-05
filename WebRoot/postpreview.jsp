@@ -28,3 +28,9 @@
 		</h5>
 	</s:div>
 </s:else>
+<s:div id="page-control">
+	<s:if test="lastPostId > 0">	
+		<s:a href="javascript:history.back()"><< Back</s:a>
+	</s:if>
+	<s:a>Next >></s:a>
+</s:div>

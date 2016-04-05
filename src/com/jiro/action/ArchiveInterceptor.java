@@ -36,13 +36,13 @@ public class ArchiveInterceptor implements Interceptor {
         Map<String, Object> sessionMap = ActionContext.getContext()
                 .getSession();
 
-        Object ob[] = (Object[]) blogPostService.getBlogPostData().iterator()
+        Object ob[] = (Object[]) blogPostService.getBlogPostDataProjection("max","blogPostId","count","blogPostId").iterator()
                 .next();
         System.out.println("AAAA:" + ob.length);
         long currMaxPosts = (long) ob[0];
         long currPostsCount = (long) ob[1];
 
-        if (checkIfArchiveUpdate(sessionMap, currMaxPosts, currPostsCount) || true) {
+        if (checkIfArchiveUpdate(sessionMap, currMaxPosts, currPostsCount)) {
             System.out.println("Archive 9");
             @SuppressWarnings("unchecked")
             Map<String, Map<String, List<String>>> zMap = blogPostService.getBlogPostArchive();

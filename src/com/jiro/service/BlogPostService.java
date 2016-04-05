@@ -26,5 +26,5 @@ public interface BlogPostService {
      *         Object[2] = count(blog_post_id)
      */
     @SuppressWarnings("rawtypes")
-    public List getBlogPostData();
+    public List getBlogPostDataProjection(String... projectionVars);
 }

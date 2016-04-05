@@ -35,59 +35,49 @@ public class BlogPostDaoImpl extends GenericDaoImpl implements BlogPostDao {
         return (List<BlogPost>) getCurrentSession()
                 .createCriteria(BlogPost.class)
                 .add(Restrictions.ge("blogPostId", lastPostId))
-                .addOrder(Order.desc("blogPostId"))
-                .setMaxResults(maxResults)
+                .addOrder(Order.desc("blogPostId")).setMaxResults(maxResults)
                 .list();
     }
-    
+
     @SuppressWarnings("unchecked")
     @Transactional
     public List<BlogPost> getUserPost(long userId) {
         return (List<BlogPost>) getCurrentSession()
                 .createCriteria(BlogPost.class)
-                .addOrder(Order.desc("blogPostId"))
-                .createCriteria("blogUser")
-                    .add(Restrictions.eq("userId", userId))
-                .list();
+                .addOrder(Order.desc("blogPostId")).createCriteria("blogUser")
+                .add(Restrictions.eq("userId", userId)).list();
     }
-    
+
     @SuppressWarnings("unchecked")
     @Transactional
     public List<ArchiveDTO> getBlogPostArchive() {
         System.out.println("AAAAA");
         String sql = "select blog_post_id as blogPostId, "
-                   + "poster_user_id as posterUserId, "
-                   + "blog_title as blogTitle, "
-                   + "DATE_FORMAT(date_time,'%Y') as postYear, "
-                   + "DATE_FORMAT(date_time,'%M') as postMonth, "
-                   + "DATE_FORMAT(date_time,'%e') as postDay "
-                   + "from blog_post b "
-                   + "order by year(date_time) desc, "
-                   + "month(date_time), "
-                   + "day(date_time), "
-                   + "blog_post_id asc;";
-        
+                + "poster_user_id as posterUserId, "
+                + "blog_title as blogTitle, "
+                + "DATE_FORMAT(date_time,'%Y') as postYear, "
+                + "DATE_FORMAT(date_time,'%M') as postMonth, "
+                + "DATE_FORMAT(date_time,'%e') as postDay "
+                + "from blog_post b " + "order by year(date_time) desc, "
+                + "month(date_time), " + "day(date_time), "
+                + "blog_post_id asc;";
+
         return (List<ArchiveDTO>) getCurrentSession()
-                                    .createSQLQuery(sql)
-                                    .addScalar("blogPostId")
-                                    .addScalar("posterUserId")
-                                    .addScalar("blogTitle")
-                                    .addScalar("postYear")
-                                    .addScalar("postMonth")
-                                    .addScalar("postDay")
-                                    .setResultTransformer(Transformers.aliasToBean(ArchiveDTO.class))
-                                    .list();
+                .createSQLQuery(sql)
+                .addScalar("blogPostId")
+                .addScalar("posterUserId")
+                .addScalar("blogTitle")
+                .addScalar("postYear")
+                .addScalar("postMonth")
+                .addScalar("postDay")
+                .setResultTransformer(
+                        Transformers.aliasToBean(ArchiveDTO.class)).list();
     }
-    
+
     @SuppressWarnings("rawtypes")
     @Transactional
-    public List getBlogPostData() {
-        Criteria crit = getCurrentSession().createCriteria(BlogPost.class);
-        
-        ProjectionList projectionList = Projections.projectionList();  
-        projectionList.add(Projections.max("blogPostId"));  
-        projectionList.add(Projections.count("blogPostId"));
-        
-        return crit.setProjection(projectionList).list();
+    public List getBlogPostData(ProjectionList projectionList) {
+        return getCurrentSession().createCriteria(BlogPost.class)
+                .setProjection(projectionList).list();
     }
 }

@@ -15,6 +15,8 @@ public class PostPreviewAction extends ActionSupport {
 
     private BlogPostService blogPostService;
     private List<BlogPost> postPreview;
+    private long lastPostId;
+    private int previewCount;
 
     public BlogPostService getBlogPostService() {
         return blogPostService;
@@ -31,11 +33,29 @@ public class PostPreviewAction extends ActionSupport {
     public void setPostPreview(List<BlogPost> postPreview) {
         this.postPreview = postPreview;
     }
+    
+    public long getLastPostId() {
+        return lastPostId;
+    }
+
+    public void setLastPostId(long lastPostId) {
+        this.lastPostId = lastPostId;
+    }
+
+    public int getPreviewCount() {
+        return previewCount;
+    }
+
+    public void setPreviewCount(int previewCount) {
+        this.previewCount = previewCount;
+    }
 
     @Override
     public String execute() throws Exception {
         System.out.println("PRINT PREVIEW");
-        postPreview = blogPostService.generatePostsPreviews(0, 20);
+        if(previewCount <= 0) 
+            previewCount = 20;
+        postPreview = blogPostService.generatePostsPreviews(lastPostId, previewCount);
         return SUCCESS;
     }
 }
