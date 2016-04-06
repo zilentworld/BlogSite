@@ -12,6 +12,8 @@ public interface BlogCommentService {
 
     public long postComment(BlogComment blogComment);
     
+    public void editComment(BlogComment blogComment);
+    
     public void deleteComment(long commentId);
 
 }

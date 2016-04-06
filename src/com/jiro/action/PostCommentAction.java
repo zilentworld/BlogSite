@@ -19,6 +19,7 @@ public class PostCommentAction extends ActionSupport implements SessionAware {
     private Map<String, Object> sessionMap;
     private BlogComment blogComment;
     private BlogCommentService blogCommentService;
+    private String commentAction;
 
     public Map<String, Object> getSessionMap() {
         return sessionMap;
@@ -43,6 +44,14 @@ public class PostCommentAction extends ActionSupport implements SessionAware {
     public void setBlogComment(BlogComment blogComment) {
         this.blogComment = blogComment;
     }
+    
+    public String getCommentAction() {
+        return commentAction;
+    }
+
+    public void setCommentAction(String commentAction) {
+        this.commentAction = commentAction;
+    }
 
     @Override
     public void setSession(Map<String, Object> sessionMap) {
@@ -55,12 +64,15 @@ public class PostCommentAction extends ActionSupport implements SessionAware {
         if (sessionMap.containsKey(Constants.SESSION_USERID)) {
             userId = (long) sessionMap.get(Constants.SESSION_USERID);
         }
-
-        blogComment.getBlogUser().setUserId((long)sessionMap.get(Constants.SESSION_USERID));
+        blogComment.getBlogUser().setUserId((long) sessionMap.get(Constants.SESSION_USERID));
         long postId = blogComment.getBlogPost().getBlogPostId();
         String newComment = blogComment.getCommentContent();
         System.out.println("user:"+userId+", postContentId:"+postId+",newcomment:"+newComment);
-        blogCommentService.postComment(blogComment);
+        if(commentAction == null || "".equals(commentAction) || "new".equalsIgnoreCase(commentAction))
+            blogCommentService.postComment(blogComment);
+        else if("edit".equals(commentAction))
+            blogCommentService.editComment(blogComment);
+        
         return SUCCESS;
     }
 }

@@ -30,6 +30,10 @@ public class BlogCommentServiceImpl implements BlogCommentService {
         return blogCommentDao.persist(blogComment);
     }
     
+    public void editComment(BlogComment blogComment) {
+        blogCommentDao.saveOrUpdate(blogComment);
+    }
+    
     public void deleteComment(long commentId) {
         blogCommentDao.delete(blogCommentDao.get(commentId));
     }

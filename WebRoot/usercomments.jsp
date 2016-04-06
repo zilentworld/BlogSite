@@ -7,6 +7,7 @@
 
 <s:iterator value="userBlogComment">
 	<s:div id="comment-%{commentId}">
+		on 
     	<s:a href="javascript:callAction('postContentActionBean?postId='+%{blogPost.blogPostId});">
     		<s:property value="blogPost.blogTitle"/>
     	</s:a>
