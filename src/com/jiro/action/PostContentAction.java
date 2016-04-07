@@ -76,7 +76,7 @@ public class PostContentAction extends ActionSupport {
     
     private void getPostContent(long postIdLong) {
         try {
-            blogPost = blogPostService.getPostContent(postIdLong);
+            blogPost = blogPostService.getBlogPost(postIdLong, false);
             if(blogPost.getBlogUser().getUserId() > 0) {
                 blogComments = blogCommentService.getPostCommentList(blogPost.getBlogPostId());
                 System.out.println("1");

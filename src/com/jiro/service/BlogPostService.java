@@ -9,22 +9,29 @@ public interface BlogPostService {
     
     public List<BlogPost> generatePostsPreviews(long lastPost, int postCount);
     
-    public BlogPost getPostContent(long postId);
+    public BlogPost getBlogPost(long postId, boolean rawData);
     
     public long saveNewBlogPost(BlogPost blogPost);
     
-    public List<BlogPost> getUserPosts(long userId);
+    public void updateNewBlogPost(BlogPost blogPost);
     
     public void deletePost(long postId);
     
+    public List<BlogPost> getUserPosts(long userId);
+        
     @SuppressWarnings("rawtypes")
     public Map getBlogPostArchive();
     
     /**
+     * Requires pairs of Strings, <br>
+     * x = first of the pair and y = second of the pair
      * 
-     * @return Object[1] = max(blog_post_id) <br>
-     *         Object[2] = count(blog_post_id)
+     * @param 
+     *        String[x] = projection type (max, count) <br>
+     *        String[y] = column 
      */
     @SuppressWarnings("rawtypes")
     public List getBlogPostDataProjection(String... projectionVars);
+        
+    public boolean isNextButton(long startPostId, int displayCount);
 }

@@ -8,6 +8,8 @@ public final class Constants {
     public static final String SESSION_POST_COUNT = "postcount";
     public static final String SESSION_BLOG_ARCHIVE = "blogArchive";
     
+    public static final int POST_PREVIEW_DEFAULT_COUNT = 20;
+    
     public Constants() {}
 
 }

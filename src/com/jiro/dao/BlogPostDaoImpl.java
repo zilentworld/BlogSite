@@ -3,10 +3,8 @@ package com.jiro.dao;
 import java.io.Serializable;
 import java.util.List;
 
-import org.hibernate.Criteria;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.ProjectionList;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
@@ -25,7 +23,6 @@ public class BlogPostDaoImpl extends GenericDaoImpl implements BlogPostDao {
 
     @SuppressWarnings("unchecked")
     public List<BlogPost> getList() {
-        // TODO Auto-generated method stub
         return (List<BlogPost>) super.getList(BlogPost.class);
     }
 
@@ -34,8 +31,9 @@ public class BlogPostDaoImpl extends GenericDaoImpl implements BlogPostDao {
     public List<BlogPost> getPostPreview(long lastPostId, int maxResults) {
         return (List<BlogPost>) getCurrentSession()
                 .createCriteria(BlogPost.class)
-                .add(Restrictions.ge("blogPostId", lastPostId))
-                .addOrder(Order.desc("blogPostId")).setMaxResults(maxResults)
+                .add(Restrictions.gt("blogPostId", lastPostId))
+                .addOrder(Order.desc("blogPostId"))
+                .setMaxResults(maxResults)
                 .list();
     }
 
@@ -76,8 +74,8 @@ public class BlogPostDaoImpl extends GenericDaoImpl implements BlogPostDao {
 
     @SuppressWarnings("rawtypes")
     @Transactional
-    public List getBlogPostData(ProjectionList projectionList) {
-        return getCurrentSession().createCriteria(BlogPost.class)
-                .setProjection(projectionList).list();
+    public List getBlogPostData(DetachedCriteria detachedCriteria) {
+        return detachedCriteria.getExecutableCriteria(getCurrentSession())
+                .list();
     }
 }

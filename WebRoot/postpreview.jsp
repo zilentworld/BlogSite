@@ -13,8 +13,8 @@
 	        by <s:property value="blogUser.getUsername()"/>
 	    </s:div>
 	    <s:div id="post-preview-%{blogPostId}">
-	        <p>
-				<s:property value="postContent.substring(0,postContent.length() > 100 ? 100 : postContent.length())"/>...
+	    	<p>
+				<s:property value="postContent.substring(0,postContent.length() > 100 ? 100 : postContent.length())" escape="false" />
 			</p>
 	    </s:div> 
 		
@@ -29,8 +29,14 @@
 	</s:div>
 </s:else>
 <s:div id="page-control">
-	<s:if test="lastPostId > 0">	
-		<s:a href="javascript:history.back()"><< Back</s:a>
+	<s:if test="oldLastPostId > 0">	
+		<s:a href="javascript:callAction('postPreviewAction?lastPostId=%{oldLastPostId}');">
+			<< Back
+		</s:a>
 	</s:if>
-	<s:a>Next >></s:a>
+	<s:if test="isNext">
+		<s:a href="javascript:callAction('postPreviewAction?lastPostId=%{lastPostId}');">
+			Next >>
+		</s:a>
+	</s:if>
 </s:div>

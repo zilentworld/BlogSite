@@ -21,6 +21,7 @@ public class NewBlogPostAction extends ActionSupport implements SessionAware {
     private BlogPostService blogPostService;
     private Map<String, Object> sessionMap;
     private String errMsg;
+    private String postType;
         
     public BlogPost getBlogPost() {
         return blogPost;
@@ -61,12 +62,23 @@ public class NewBlogPostAction extends ActionSupport implements SessionAware {
             return true;
         }
     }
+    
+    public String getPostType() {
+        return postType;
+    }
+
+    public void setPostType(String postType) {
+        this.postType = postType;
+    }
 
     @Override
     public String execute() throws Exception {
         System.out.println("afas");
         blogPost.getBlogUser().setUserId((long)sessionMap.get(Constants.SESSION_USERID));
-        postId = blogPostService.saveNewBlogPost(blogPost);
+        if("edit".equals(postType))
+            blogPostService.updateNewBlogPost(blogPost);
+        else
+            postId = blogPostService.saveNewBlogPost(blogPost);
         System.out.println("HHHH" + postId);
         if(postId > 0)
             return SUCCESS;
@@ -76,6 +88,11 @@ public class NewBlogPostAction extends ActionSupport implements SessionAware {
     }
     
     public String createPost() {
+        return SUCCESS;
+    }
+    
+    public String editPost() {
+        blogPost = blogPostService.getBlogPost(postId, true);
         return SUCCESS;
     }
 

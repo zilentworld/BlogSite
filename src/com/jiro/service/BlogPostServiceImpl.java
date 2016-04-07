@@ -5,8 +5,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jiro.dao.BlogPostDao;
@@ -24,19 +27,32 @@ public class BlogPostServiceImpl implements BlogPostService {
     }
 
     public List<BlogPost> generatePostsPreviews(long lastPost, int postCount) {
-        return blogPostDao.getPostPreview(lastPost, postCount);
+        List<BlogPost> blogPostList = blogPostDao.getPostPreview(lastPost,
+                postCount);
+        blogPostList.forEach(e -> e.setPostContent(postContentManipulation(
+                                        e.getPostContent(), "postPreview")));
+
+        return blogPostList;
     }
 
     public List<BlogPost> getUserPosts(long userId) {
         return blogPostDao.getUserPost(userId);
     }
 
-    public BlogPost getPostContent(long postId) {
-        return (BlogPost) blogPostDao.get(postId);
+    public BlogPost getBlogPost(long postId, boolean rawData) {
+        BlogPost blogPost = (BlogPost) blogPostDao.get(postId);
+        if (!rawData)
+            blogPost.setPostContent(postContentManipulation(
+                    blogPost.getPostContent(), "postContent"));
+        return blogPost;
     }
 
     public long saveNewBlogPost(BlogPost blogPost) {
         return blogPostDao.persist(blogPost);
+    }
+
+    public void updateNewBlogPost(BlogPost blogPost) {
+        blogPostDao.saveOrUpdate(blogPost);
     }
 
     public void deletePost(long postId) {
@@ -76,24 +92,69 @@ public class BlogPostServiceImpl implements BlogPostService {
 
     @SuppressWarnings("rawtypes")
     public List getBlogPostDataProjection(String... projectionVars) {
-        if(projectionVars.length >= 2) {
+        if (projectionVars.length >= 2) {
+            DetachedCriteria detachedCriteria = DetachedCriteria.forClass(BlogPost.class);
             ProjectionList projectionList = Projections.projectionList();
             try {
-                for(int a = 0; a < projectionVars.length ; a += 2) {
+                for (int a = 0; a < projectionVars.length; a += 2) {
                     switch (projectionVars[a].toUpperCase()) {
-                        case "MAX": projectionList.add(Projections.max(projectionVars[a+1]));
-                                    break;
-                        case "COUNT" : projectionList.add(Projections.count(projectionVars[a+1]));
-                        default: break;
+                    case "MAX":
+                        projectionList.add(Projections
+                                .max(projectionVars[a + 1]));
+                        break;
+                    case "COUNT":
+                        projectionList.add(Projections
+                                .count(projectionVars[a + 1]));
+                    default:
+                        break;
                     }
                 }
+                detachedCriteria.setProjection(projectionList);
+                return blogPostDao.getBlogPostData(detachedCriteria);
             } catch (ArrayIndexOutOfBoundsException e) {
                 return null;
-            }    
-            return blogPostDao.getBlogPostData(projectionList);
+            }
         } else {
             return null;
         }
+    }
+    
+    public boolean isNextButton(long startPostId, int displayCount) {
+        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(BlogPost.class);
+        detachedCriteria.add(Restrictions.gt("blogPostId", startPostId))
+            .setProjection(Projections.count("blogPostId"))
+            .addOrder(Order.desc("blogPostId"));
+        int postCount = (int) blogPostDao.getBlogPostData(detachedCriteria).get(0);
+        return postCount > displayCount;
+    }
+    
+
+    private String postContentManipulation(String postContent, String displayFor) {
+        String holder = postContent;
+
+        while (holder.contains("<image>") || holder.contains("</image")) {
+            int imgIdxStart = holder.indexOf("<image>");
+            int imgIdxEnd = holder.indexOf("</image>");
+            if (imgIdxStart > imgIdxEnd)
+                break;
+
+            if ("postContent".equals(displayFor)) {
+                String imgString = "<div style=\"heigth:800px;width:800px;\"><img src=\""
+                        + holder.substring(imgIdxStart + 7, imgIdxEnd)
+                                .replaceAll("(\\r|\\n|\\r\\n)+", "")
+                        + "\" style=\"max-width:100%; max-height:100%\"></img></div>";
+                holder = holder.substring(0, imgIdxStart) + imgString
+                        + holder.substring(imgIdxEnd + 8);
+            } else { // postPreview and others
+                holder = holder.substring(0, imgIdxStart)
+                        + holder.substring(imgIdxEnd + 8);
+            }
+            System.out.println("HOLDER:" + holder);
+        }
+        holder = "<p>" + holder.replaceAll("(\\r|\\n|\\r\\n)+", "</p><p>")
+                + "</p>";
+
+        return holder;
     }
 
 }

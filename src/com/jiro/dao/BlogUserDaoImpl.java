@@ -18,7 +18,6 @@ public class BlogUserDaoImpl extends GenericDaoImpl implements BlogUserDao {
 
     @SuppressWarnings("unchecked")
     public List<BlogUser> getList() {
-        // TODO Auto-generated method stub
         return (List<BlogUser>) super.getList(BlogPost.class);
     }
 

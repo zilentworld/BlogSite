@@ -35,6 +35,8 @@
         <property name="blogCommentService" ref="blogCommentService" />
     </bean>
     
+    <bean id="imageActionBean" class="com.jiro.action.ImageAction" scope="prototype" />
+        
     <bean id="postCommentActionBean" class="com.jiro.action.PostCommentAction" scope="prototype">
         <property name="blogCommentService" ref="blogCommentService" />
     </bean>

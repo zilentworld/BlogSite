@@ -26,20 +26,18 @@
 			</s:div>
 			<s:div id="blog-poster">
 				<i>
-					<s:property value="blogPost.blogUser.username" />
+					by <s:property value="blogPost.blogUser.username" />
 				</i>
 			</s:div>
 			<s:div id="blog-postbody">
-				<p>
-					<s:property value="blogPost.postContent" escape="false"/>
-				</p>
+				<s:property value="blogPost.postContent" escape="false"/>
 			</s:div>
 		</s:div>
 		<s:if test="#session.userid == blogPost.blogUser.userId">
 			<s:div id="post-controls" style="clear:both; float:right;">
 				<s:form id="post-control-form">
 					<s:a
-						href="javascript:callAction('postContentActionBean?postId=' + %{blogPost.blogPostId});">
+						href="javascript:callAction('editBlogPost?postType=edit&postId=' + %{blogPost.blogPostId});">
 		    			Edit
 		    		</s:a> 
 			 		|
