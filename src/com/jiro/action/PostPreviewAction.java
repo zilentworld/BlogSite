@@ -87,7 +87,7 @@ public class PostPreviewAction extends ActionSupport {
         isNext = blogPostService.isNextButton(lastPostId, previewCount);
         oldLastPostId = lastPostId;
         lastPostId = postPreview.get(previewCount).getBlogPostId();
-                
+                 
         return SUCCESS;
     }
 }
