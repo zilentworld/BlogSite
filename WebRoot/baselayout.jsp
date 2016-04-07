@@ -23,6 +23,9 @@ html{
     width:100%;
     height:100%;
 }
+.header-button {
+	background-color: gray
+}
 </style>
 <body>
 	<div id="site_whole" style="height: 100%; width: 100%">
@@ -38,24 +41,21 @@ html{
 				</div>
 			</div>
 			<div id="site-holder" style="margin:1%">
-				<hr style="clear:both;" />
-				<div id="headers" style="height: 5%">
-					<div id="header-buttons" style="height: 10px">
+				<div id="headers" style="min-height: 5%; background-color: aqua;">
+					<div id="header-buttons" style="min-height: 10px">
 						<tiles:insertAttribute name="header" ignore="true" />
 					</div>
 				</div>
-				<br />
-				<hr style="clear:both;" />
 				<div id="body-content" style="height:70%">
 					<div id="body-container" style="margin: 1%">
-						<div id="main-content" style="width:90%; float:left">
+						<div id="main-content" style="min-width:80%; float:left">
 							<div style="width=90%; height=90%; clear:both;" style="margin:1%">
 								<div id="posts-content" style="margin:1%">
 									<tiles:insertAttribute name="body" />
 								</div>
 							</div>
 						</div>
-						<div id="side-content" style="width:10%; float:left;">
+						<div id="side-content" style="min-width:10%; max-width:20%; float:left;">
 							<div>
 								<div id="archive-content" style="margin: 3%; min-height: 30%">
 									<tiles:insertAttribute name="archive" />

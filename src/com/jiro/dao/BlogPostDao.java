@@ -20,5 +20,6 @@ public interface BlogPostDao extends GenericDao {
     
     public List<ArchiveDTO> getBlogPostArchive();
     
+    @SuppressWarnings("rawtypes")
     public List getBlogPostData(DetachedCriteria detachedCriteria);
 }
