@@ -28,11 +28,11 @@ public class BlogPostDaoImpl extends GenericDaoImpl implements BlogPostDao {
 
     @SuppressWarnings("unchecked")
     @Transactional
-    public List<BlogPost> getPostPreview(long lastPostId, int maxResults) {
+    public List<BlogPost> getPostPreview(int currPage, int maxResults) {
         return (List<BlogPost>) getCurrentSession()
                 .createCriteria(BlogPost.class)
-                .add(Restrictions.gt("blogPostId", lastPostId))
                 .addOrder(Order.desc("blogPostId"))
+                .setFirstResult(maxResults * (currPage-1))
                 .setMaxResults(maxResults)
                 .list();
     }
@@ -42,22 +42,25 @@ public class BlogPostDaoImpl extends GenericDaoImpl implements BlogPostDao {
     public List<BlogPost> getUserPost(long userId) {
         return (List<BlogPost>) getCurrentSession()
                 .createCriteria(BlogPost.class)
-                .addOrder(Order.desc("blogPostId")).createCriteria("blogUser")
-                .add(Restrictions.eq("userId", userId)).list();
+                .addOrder(Order.desc("blogPostId"))
+                .createCriteria("blogUser")
+                .add(Restrictions.eq("userId", userId))
+                .list();
     }
 
     @SuppressWarnings("unchecked")
     @Transactional
     public List<ArchiveDTO> getBlogPostArchive() {
-        System.out.println("AAAAA");
         String sql = "select blog_post_id as blogPostId, "
                 + "poster_user_id as posterUserId, "
                 + "blog_title as blogTitle, "
                 + "DATE_FORMAT(date_time,'%Y') as postYear, "
                 + "DATE_FORMAT(date_time,'%M') as postMonth, "
                 + "DATE_FORMAT(date_time,'%e') as postDay "
-                + "from blog_post b " + "order by year(date_time) desc, "
-                + "month(date_time), " + "day(date_time), "
+                + "from blog_post b " 
+                + "order by year(date_time) desc, "
+                + "month(date_time), " 
+                + "day(date_time), "
                 + "blog_post_id asc;";
 
         return (List<ArchiveDTO>) getCurrentSession()
@@ -75,7 +78,8 @@ public class BlogPostDaoImpl extends GenericDaoImpl implements BlogPostDao {
     @SuppressWarnings("rawtypes")
     @Transactional
     public List getBlogPostData(DetachedCriteria detachedCriteria) {
-        return detachedCriteria.getExecutableCriteria(getCurrentSession())
+        return detachedCriteria
+                .getExecutableCriteria(getCurrentSession())
                 .list();
     }
 }

@@ -17,17 +17,13 @@ public class BlogUserServiceImpl implements BlogUserService {
     }
     
     public boolean checkLogin(String username, String password) {
-        System.out.println("username:"+username + ", password:"+password);
         BlogUser blogUser = blogUserDao.getUserByLogin(username, password);
         if(blogUser == null) {
-            System.out.println("null");
             return false;
         } else {
             if(blogUser.getUserId() > 0) {
-                System.out.println(">0");
                 return true;
             } else {
-                System.out.println("else");
                 return false;
             }
         }

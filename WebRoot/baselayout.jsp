@@ -13,14 +13,25 @@
 <head>
 <title>Title</title>
 </head>
+<style type="text/css">
+html{
+    background: url(<s:url action='ImageAction?imageId=gray2.jpg' />) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    width:100%;
+    height:100%;
+}
+</style>
 <body>
-
 	<div id="site_whole" style="height: 100%; width: 100%">
 		<div id="site-container"
 			style="width: 80%; 
 			position: absolute;
 			left: 10%;
-			border: 1px solid black">
+			border: 1px solid black;
+			background-color: white">
 			<div id="banner">
 				<div id="banner-img">
 					<tiles:insertAttribute name="banner" ignore="true" />

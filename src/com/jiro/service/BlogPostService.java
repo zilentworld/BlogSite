@@ -7,7 +7,7 @@ import com.jiro.model.BlogPost;
 
 public interface BlogPostService {
     
-    public List<BlogPost> generatePostsPreviews(long lastPost, int postCount);
+    public List<BlogPost> generatePostsPreviews(int currPage, int postCount);
     
     public BlogPost getBlogPost(long postId, boolean rawData);
     
@@ -33,5 +33,5 @@ public interface BlogPostService {
     @SuppressWarnings("rawtypes")
     public List getBlogPostDataProjection(String... projectionVars);
         
-    public boolean isNextButton(long startPostId, int displayCount);
+    public boolean isNextButton(long startPostId);
 }

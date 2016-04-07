@@ -58,7 +58,6 @@ public class LoginAction extends ActionSupport implements SessionAware {
     public void validate() {
         String username = blogUser.getUsername();
         String password = blogUser.getPassword();
-        System.out.println("username:"+username + ", password:"+password);
         if (username == null || password == null) {
             addFieldError("blogUser.username", "Invalid login");
         } else if (!blogUserService.checkLogin(username, password)) {
@@ -68,7 +67,6 @@ public class LoginAction extends ActionSupport implements SessionAware {
 
     @SkipValidation
     public String postLogin() throws Exception {
-        System.out.println("77");
         return LOGIN;
     }
 

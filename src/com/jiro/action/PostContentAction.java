@@ -63,10 +63,8 @@ public class PostContentAction extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        System.out.println("PRINT CONTENT:"+postId);
         try {
             getPostContent(Long.parseLong(this.postId));
-//            getPostContent(postId);
         } catch (NumberFormatException e) {
             blogPost = null;
         }
@@ -78,9 +76,7 @@ public class PostContentAction extends ActionSupport {
         try {
             blogPost = blogPostService.getBlogPost(postIdLong, false);
             if(blogPost.getBlogUser().getUserId() > 0) {
-                blogComments = blogCommentService.getPostCommentList(blogPost.getBlogPostId());
-                System.out.println("1");
-                System.out.println(blogComments.size());                    
+                blogComments = blogCommentService.getPostCommentList(blogPost.getBlogPostId());                    
             } else {
                 blogPost = null;
             }

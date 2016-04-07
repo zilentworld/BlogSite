@@ -47,10 +47,8 @@ public class UserPostsAction extends ActionSupport implements SessionAware {
     
     @Override
     public String execute() throws Exception {
-        System.out.println("USERPOSTS");
         long userId = (long) sessionMap.get(Constants.SESSION_USERID);
         userBlogPosts = blogPostService.getUserPosts(userId);
-        System.out.println("userBlogPosts:"+userBlogPosts.size());
         return SUCCESS;
     }
 

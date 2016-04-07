@@ -60,14 +60,7 @@ public class PostCommentAction extends ActionSupport implements SessionAware {
 
     @Override
     public String execute() throws Exception {
-        long userId = 0L;
-        if (sessionMap.containsKey(Constants.SESSION_USERID)) {
-            userId = (long) sessionMap.get(Constants.SESSION_USERID);
-        }
         blogComment.getBlogUser().setUserId((long) sessionMap.get(Constants.SESSION_USERID));
-        long postId = blogComment.getBlogPost().getBlogPostId();
-        String newComment = blogComment.getCommentContent();
-        System.out.println("user:"+userId+", postContentId:"+postId+",newcomment:"+newComment);
         if(commentAction == null || "".equals(commentAction) || "new".equalsIgnoreCase(commentAction))
             blogCommentService.postComment(blogComment);
         else if("edit".equals(commentAction))
@@ -75,4 +68,12 @@ public class PostCommentAction extends ActionSupport implements SessionAware {
         
         return SUCCESS;
     }
+
+    @Override
+    public void validate() {
+        if (!sessionMap.containsKey(Constants.SESSION_USERID))
+            addFieldError("blogComment.commentContent", "Kindly relog");
+    }
+    
+    
 }

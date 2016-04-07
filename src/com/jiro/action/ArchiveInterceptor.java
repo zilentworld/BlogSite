@@ -1,12 +1,9 @@
 package com.jiro.action;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.jiro.model.BlogPost;
 import com.jiro.service.BlogPostService;
 import com.jiro.utility.Constants;
 import com.opensymphony.xwork2.ActionContext;
@@ -38,26 +35,14 @@ public class ArchiveInterceptor implements Interceptor {
 
         Object ob[] = (Object[]) blogPostService.getBlogPostDataProjection("max","blogPostId","count","blogPostId").iterator()
                 .next();
-        System.out.println("AAAA:" + ob.length);
         long currMaxPosts = (long) ob[0];
         long currPostsCount = (long) ob[1];
 
         if (checkIfArchiveUpdate(sessionMap, currMaxPosts, currPostsCount)) {
-            System.out.println("Archive 9");
-            @SuppressWarnings("unchecked")
-            Map<String, Map<String, List<String>>> zMap = blogPostService.getBlogPostArchive();
-            for (Entry<String, Map<String, List<String>>> yearMap : zMap.entrySet()) {
-                System.out.println("YEAR:"+yearMap.getKey());
-                for (Map.Entry<String, List<String>> monthMap : yearMap.getValue().entrySet()) {
-                    System.out.println("MONTH"+monthMap.getKey());
-                }
-            }
-//            sessionMap.put(Constants.SESSION_BLOG_ARCHIVE, blogPostService.getBlogPostArchive());
-            sessionMap.put(Constants.SESSION_BLOG_ARCHIVE, zMap);
+            sessionMap.put(Constants.SESSION_BLOG_ARCHIVE, blogPostService.getBlogPostArchive());
             sessionMap.put(Constants.SESSION_MAX_POST, currMaxPosts);
             sessionMap.put(Constants.SESSION_POST_COUNT, currPostsCount);
-        } else
-            System.out.println("NOT UPDATE ARCHIVE");
+        }
 
         return invocation.invoke();
     }
@@ -80,8 +65,6 @@ public class ArchiveInterceptor implements Interceptor {
                         postsCount = (long) obj;
                     }
                 }
-                System.out.println("max:" + maxPosts + ", currMax:" + currMaxPosts
-                        + ", post:" + postsCount + ", currPost:" + currPostsCount);
     
                 return (maxPosts != currMaxPosts || postsCount != currPostsCount);
             }

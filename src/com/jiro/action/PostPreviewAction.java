@@ -16,11 +16,10 @@ public class PostPreviewAction extends ActionSupport {
 
     private BlogPostService blogPostService;
     private List<BlogPost> postPreview;
-    private long oldLastPostId;
     private long lastPostId;
     private int previewCount;
     private boolean isNext;
-    private boolean isBack;
+    private int currPage;
 
     public BlogPostService getBlogPostService() {
         return blogPostService;
@@ -62,31 +61,23 @@ public class PostPreviewAction extends ActionSupport {
         this.isNext = isNext;
     }
     
-    public boolean isBack() {
-        return isBack;
+    public int getCurrPage() {
+        return currPage;
     }
 
-    public void setBack(boolean isBack) {
-        this.isBack = isBack;
-    }
-    
-    public long getOldLastPostId() {
-        return oldLastPostId;
-    }
-
-    public void setOldLastPostId(long oldLastPostId) {
-        this.oldLastPostId = oldLastPostId;
+    public void setCurrPage(int currPage) {
+        this.currPage = currPage;
     }
 
     @Override
     public String execute() throws Exception {
-        System.out.println("PRINT PREVIEW");
         if(previewCount <= 0) 
             previewCount = Constants.POST_PREVIEW_DEFAULT_COUNT;
-        postPreview = blogPostService.generatePostsPreviews(lastPostId, previewCount);
-        isNext = blogPostService.isNextButton(lastPostId, previewCount);
-        oldLastPostId = lastPostId;
-        lastPostId = postPreview.get(previewCount).getBlogPostId();
+        if(currPage <= 0) 
+            currPage = 1;
+        postPreview = blogPostService.generatePostsPreviews(currPage, previewCount);
+        lastPostId = postPreview.get(postPreview.size()-1).getBlogPostId();
+        isNext = blogPostService.isNextButton(lastPostId);
                  
         return SUCCESS;
     }

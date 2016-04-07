@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.ProjectionList;
 
 import com.jiro.model.ArchiveDTO;
 import com.jiro.model.BlogPost;
@@ -15,7 +14,7 @@ public interface BlogPostDao extends GenericDao {
 
     public List<BlogPost> getList();
 
-    public List<BlogPost> getPostPreview(long lastPostId, int maxResults);
+    public List<BlogPost> getPostPreview(int currPage, int maxResults);
     
     public List<BlogPost> getUserPost(long userId);
     

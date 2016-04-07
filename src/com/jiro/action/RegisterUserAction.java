@@ -51,7 +51,6 @@ public class RegisterUserAction extends ActionSupport {
     public void validate() {
         String username = blogUser.getUsername();
         String password = blogUser.getPassword();
-        System.out.println("username:"+username + ", password:"+password);
         if (username == null || password == null) {
             addFieldError("blogUser.username", "Invalid login");
         }

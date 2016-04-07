@@ -26,8 +26,8 @@ public class BlogPostServiceImpl implements BlogPostService {
         this.blogPostDao = blogPostDao;
     }
 
-    public List<BlogPost> generatePostsPreviews(long lastPost, int postCount) {
-        List<BlogPost> blogPostList = blogPostDao.getPostPreview(lastPost,
+    public List<BlogPost> generatePostsPreviews(int currPage, int postCount) {
+        List<BlogPost> blogPostList = blogPostDao.getPostPreview(currPage,
                 postCount);
         blogPostList.forEach(e -> e.setPostContent(postContentManipulation(
                                         e.getPostContent(), "postPreview")));
@@ -61,10 +61,8 @@ public class BlogPostServiceImpl implements BlogPostService {
 
     @SuppressWarnings("rawtypes")
     public Map getBlogPostArchive() {
-        System.out.println("BBBB");
         Map<String, LinkedHashMap<String, List<String>>> yearMap = new LinkedHashMap<String, LinkedHashMap<String, List<String>>>();
         List<ArchiveDTO> archiveDTOs = blogPostDao.getBlogPostArchive();
-        System.out.println("START ARCHIVE DTO");
         for (ArchiveDTO archiveDTO : archiveDTOs) {
             String postYear = archiveDTO.getPostYear();
             String postMonth = archiveDTO.getPostMonth();
@@ -86,7 +84,6 @@ public class BlogPostServiceImpl implements BlogPostService {
             monthMap.put(postMonth, links);
             yearMap.put(postYear, monthMap);
         }
-        System.out.println("SERVICE ARCHIVE:" + yearMap.size());
         return yearMap;
     }
 
@@ -119,13 +116,16 @@ public class BlogPostServiceImpl implements BlogPostService {
         }
     }
     
-    public boolean isNextButton(long startPostId, int displayCount) {
+    public boolean isNextButton(long startPostId) {
         DetachedCriteria detachedCriteria = DetachedCriteria.forClass(BlogPost.class);
-        detachedCriteria.add(Restrictions.gt("blogPostId", startPostId))
-            .setProjection(Projections.count("blogPostId"))
-            .addOrder(Order.desc("blogPostId"));
-        int postCount = (int) blogPostDao.getBlogPostData(detachedCriteria).get(0);
-        return postCount > displayCount;
+        detachedCriteria.setProjection(Projections.count("blogPostId"))
+                        .addOrder(Order.desc("blogPostId"));
+        if(startPostId > 0)
+            detachedCriteria.add(Restrictions.lt("blogPostId", startPostId));
+        
+        long postCount = (long) blogPostDao.getBlogPostData(detachedCriteria).get(0);
+        
+        return postCount > 0;
     }
     
 
@@ -149,7 +149,6 @@ public class BlogPostServiceImpl implements BlogPostService {
                 holder = holder.substring(0, imgIdxStart)
                         + holder.substring(imgIdxEnd + 8);
             }
-            System.out.println("HOLDER:" + holder);
         }
         holder = "<p>" + holder.replaceAll("(\\r|\\n|\\r\\n)+", "</p><p>")
                 + "</p>";

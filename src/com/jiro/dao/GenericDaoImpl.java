@@ -20,7 +20,6 @@ public abstract class GenericDaoImpl implements GenericDao {
     }
     
     protected Session getCurrentSession() {
-        System.out.println("session get");
         return sessionFactory.getCurrentSession();
     }
 

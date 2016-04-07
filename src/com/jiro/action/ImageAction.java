@@ -5,9 +5,12 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.struts2.interceptor.ServletRequestAware;
+
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ImageAction extends ActionSupport implements ServletRequestAware {
@@ -30,7 +33,6 @@ public class ImageAction extends ActionSupport implements ServletRequestAware {
     }
 
     public ImageAction() {
-        System.out.println("ImageAction");
     }
 
     public String execute() {
@@ -38,8 +40,6 @@ public class ImageAction extends ActionSupport implements ServletRequestAware {
     }
 
     public byte[] getCustomImageInBytes() {
-
-        System.out.println("imageId" + imageId);
 
         BufferedImage originalImage;
         try {
@@ -60,7 +60,6 @@ public class ImageAction extends ActionSupport implements ServletRequestAware {
     private File getImageFile(String imageId) {
         String filePath = servletRequest.getSession().getServletContext().getRealPath("/");
         File file = new File(filePath + "/images/", imageId);
-        System.out.println(file.toString());
         return file;
     }
 

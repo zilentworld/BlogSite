@@ -20,8 +20,6 @@ public class BlogCommentDaoImpl extends GenericDaoImpl implements BlogCommentDao
     @Transactional
     @SuppressWarnings("unchecked")
     public List<BlogComment> getBlogPostComments(long postId) {
-        System.out.println("postId:" + postId);
-
         return getCurrentSession().createCriteria(BlogComment.class)
                 .addOrder(Order.desc("commentId"))
                 .createCriteria("blogPost")
@@ -32,7 +30,6 @@ public class BlogCommentDaoImpl extends GenericDaoImpl implements BlogCommentDao
     @Transactional
     @SuppressWarnings("unchecked")
     public List<BlogComment> getBlogUserComments(long userId) {
-        System.out.println("userId:" + userId);
         return (List<BlogComment>) getCurrentSession()
                 .createCriteria(BlogComment.class)
                 .addOrder(Order.desc("commentId"))

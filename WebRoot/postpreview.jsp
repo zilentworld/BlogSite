@@ -29,13 +29,13 @@
 	</s:div>
 </s:else>
 <s:div id="page-control">
-	<s:if test="oldLastPostId > 0">	
-		<s:a href="javascript:callAction('postPreviewAction?lastPostId=%{oldLastPostId}');">
+	<s:if test="currPage > 1">	
+		<s:a href="javascript:callAction('postPreviewAction?currPage=%{currPage-1}&previewCount=%{previewCount}');">
 			<< Back
 		</s:a>
 	</s:if>
-	<s:if test="isNext">
-		<s:a href="javascript:callAction('postPreviewAction?lastPostId=%{lastPostId}');">
+	<s:if test="isNext()">
+		<s:a href="javascript:callAction('postPreviewAction?currPage=%{currPage+1}&previewCount=%{previewCount}');">
 			Next >>
 		</s:a>
 	</s:if>
