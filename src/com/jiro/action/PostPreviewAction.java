@@ -76,7 +76,11 @@ public class PostPreviewAction extends ActionSupport {
         if(currPage <= 0) 
             currPage = 1;
         postPreview = blogPostService.generatePostsPreviews(currPage, previewCount);
-        lastPostId = postPreview.get(postPreview.size()-1).getBlogPostId();
+        if(postPreview != null && postPreview.size() > 0)
+            lastPostId = postPreview.get(postPreview.size()-1).getBlogPostId();
+        else
+            lastPostId = 0;
+       
         isNext = blogPostService.isNextButton(lastPostId);
                  
         return SUCCESS;

@@ -73,6 +73,8 @@ public class PostCommentAction extends ActionSupport implements SessionAware {
     public void validate() {
         if (!sessionMap.containsKey(Constants.SESSION_USERID))
             addFieldError("blogComment.commentContent", "Kindly relog");
+        if(blogComment.getCommentContent() == null || blogComment.getCommentContent().length() <= 0)
+            addFieldError("blogComment.commentContent", "Please write a comment");
     }
     
     

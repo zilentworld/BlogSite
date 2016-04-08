@@ -35,10 +35,16 @@ public class ArchiveInterceptor implements Interceptor {
 
         Object ob[] = (Object[]) blogPostService.getBlogPostDataProjection("max","blogPostId","count","blogPostId").iterator()
                 .next();
-        long currMaxPosts = (long) ob[0];
+//        long currMaxPosts = 0;
+//        long currPostsCount = 0;
+        long currMaxPosts = (long) (ob[0] == null ? 0L : ob[0]);
         long currPostsCount = (long) ob[1];
 
-        if (checkIfArchiveUpdate(sessionMap, currMaxPosts, currPostsCount)) {
+        if(currMaxPosts <= 0 || currPostsCount <= 0) {
+            sessionMap.put(Constants.SESSION_BLOG_ARCHIVE, null);
+            sessionMap.put(Constants.SESSION_MAX_POST, 0);
+            sessionMap.put(Constants.SESSION_POST_COUNT, 0);
+        } else if (checkIfArchiveUpdate(sessionMap, currMaxPosts, currPostsCount)) {
             sessionMap.put(Constants.SESSION_BLOG_ARCHIVE, blogPostService.getBlogPostArchive());
             sessionMap.put(Constants.SESSION_MAX_POST, currMaxPosts);
             sessionMap.put(Constants.SESSION_POST_COUNT, currPostsCount);

@@ -30,9 +30,11 @@ html{
 <body>
 	<div id="site_whole" style="height: 100%; width: 100%">
 		<div id="site-container"
-			style="width: 80%; 
+			style="min-width: 80%; 
+			max-width: 90%;
 			position: absolute;
-			left: 10%;
+			left: 5%;
+			right: 5%;
 			border: 1px solid black;
 			background-color: white">
 			<div id="banner">
@@ -48,14 +50,14 @@ html{
 				</div>
 				<div id="body-content" style="height:70%">
 					<div id="body-container" style="margin: 1%">
-						<div id="main-content" style="min-width:80%; float:left">
+						<div id="main-content" style="min-width:70%; width:85%; max-width:85%; float:left">
 							<div style="width=90%; height=90%; clear:both;" style="margin:1%">
 								<div id="posts-content" style="margin:1%">
 									<tiles:insertAttribute name="body" />
 								</div>
 							</div>
 						</div>
-						<div id="side-content" style="min-width:10%; max-width:20%; float:left;">
+						<div id="side-content" style="min-width:10%; max-width:15%; float:left;">
 							<div>
 								<div id="archive-content" style="margin: 3%; min-height: 30%">
 									<tiles:insertAttribute name="archive" />

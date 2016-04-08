@@ -74,15 +74,18 @@ public class NewBlogPostAction extends ActionSupport implements SessionAware {
     @Override
     public String execute() throws Exception {
         blogPost.getBlogUser().setUserId((long)sessionMap.get(Constants.SESSION_USERID));
-        if("edit".equals(postType))
+        System.out.println("postType:"+postType);
+        if("edit".equalsIgnoreCase(postType)) {
+            System.out.println("EDIT:postId:"+postId+", blogPost.postId:"+blogPost.getBlogPostId());
             blogPostService.updateNewBlogPost(blogPost);
-        else
+            postId = blogPost.getBlogPostId();
+        } else {
             postId = blogPostService.saveNewBlogPost(blogPost);
+        }
         if(postId > 0)
             return SUCCESS;
-        else {
+        else
             return ERROR;
-        }
     }
     
     public String createPost() {

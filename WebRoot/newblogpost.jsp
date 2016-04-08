@@ -12,9 +12,10 @@
     </s:if>
     <s:form action="processBlogPost" method="post">
     	<s:if test="'edit'.equals(postType)">
-    		<s:hidden name="blogPost.postId" value="postId"/>
+    		<s:hidden name="blogPost.blogPostId" value="%{postId}"/>
+    		<s:hidden name="postType" value="edit"/>
     	</s:if>
-        <s:textfield label="Title" name="blogPost.blogTitle" />
+        <s:textfield label="Title" name="blogPost.blogTitle" style="min-width:400px"/>
         <s:textarea label="Content" name="blogPost.postContent" style="width:1100px; height:300px; max-width:1100px" />
         <s:label><i style="font-size:13px">Note: Enclose a url in &ltimage&gt &lt/image&gt for image support (max display size 800x800)</i></s:label>
         <s:submit />

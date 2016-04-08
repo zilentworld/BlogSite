@@ -58,7 +58,7 @@
 				<s:form action="postComment" method="post">
 					<s:hidden name="blogComment.blogPost.blogPostId"
 						value="%{blogPost.blogPostId}" />
-					<s:textarea name="blogComment.commentContent" />
+					<s:textarea name="blogComment.commentContent" style="width:320px; height:90px" />
 					<br />
 					<s:submit />
 				</s:form>
