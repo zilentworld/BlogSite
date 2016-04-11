@@ -76,6 +76,7 @@
 					<s:div id="comment-controls" style="display:block;">
 						<s:form id="comment-control-form-%{commentId}">
 							<s:property value="blogUser.username" />
+							<s:date name="dateTime" format="MM/dd/yyyy hh:mm" />
 							<s:if test="#session.userid == blogUser.userId">
 								(
 					    		<s:a

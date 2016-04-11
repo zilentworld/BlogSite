@@ -1,5 +1,6 @@
 package com.jiro.model;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="blog_post")
@@ -26,6 +29,8 @@ public class BlogPost {
     private String postPreview;
     private BlogUser blogUser;
     private Set<BlogComment> blogComments;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateTime;
     
     @Column(name="blog_post_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,7 +81,15 @@ public class BlogPost {
     public void setPostPreview(String postPreview) {
         this.postPreview = postPreview;
     }
-
+    
+    @Column(name="date_time")
+    public Date getDateTime() {
+        return dateTime;
+    }
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
+    }
+    
     @ManyToOne
     @JoinColumn(name = "poster_user_id")
     public BlogUser getBlogUser() {

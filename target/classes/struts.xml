@@ -17,8 +17,7 @@
         	<interceptor name="archive" class="com.jiro.action.ArchiveInterceptor" />
         	<interceptor-stack name="blogSiteInterceptor">
         		<interceptor-ref name="defaultStack" />
-        		<interceptor-ref name="archive" />
-        		
+        		<interceptor-ref name="archive" />        		
         	</interceptor-stack>
         </interceptors>
         
@@ -27,7 +26,6 @@
         <action name="login" class="loginActionBean" >
             <result name="input" type="tiles">/login.tiles</result>
             <result name="none" type="tiles">/login.tiles</result>
-            <result name="login" type="tiles">/login.tiles</result>
             <result name="success" type="redirectAction">postPreviewAction</result>
             <result name="error" type="tiles">/login.tiles</result>
         </action>
