@@ -22,6 +22,7 @@ public class BlogPostDaoImpl extends GenericDaoImpl implements BlogPostDao {
     }
 
     @SuppressWarnings("unchecked")
+    @Transactional
     public List<BlogPost> getList() {
         return (List<BlogPost>) super.getList(BlogPost.class);
     }
@@ -62,7 +63,7 @@ public class BlogPostDaoImpl extends GenericDaoImpl implements BlogPostDao {
                 + "month(date_time), " 
                 + "day(date_time), "
                 + "blog_post_id asc;";
-
+        
         return (List<ArchiveDTO>) getCurrentSession()
                 .createSQLQuery(sql)
                 .addScalar("blogPostId")

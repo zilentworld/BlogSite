@@ -1,6 +1,7 @@
 package com.jiro.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +63,10 @@ public class BlogPostServiceImpl implements BlogPostService {
     @SuppressWarnings("rawtypes")
     public Map getBlogPostArchive() {
         Map<String, LinkedHashMap<String, List<String>>> yearMap = new LinkedHashMap<String, LinkedHashMap<String, List<String>>>();
-        List<ArchiveDTO> archiveDTOs = blogPostDao.getBlogPostArchive();
+//        List<ArchiveDTO> archiveDTOs = blogPostDao.getBlogPostArchive();
+        List<ArchiveDTO> archiveDTOs = new ArrayList<ArchiveDTO>();
+        blogPostDao.getList().forEach(e -> archiveDTOs.add(new ArchiveDTO(e)));
+        Collections.sort(archiveDTOs);
         for (ArchiveDTO archiveDTO : archiveDTOs) {
             String postYear = archiveDTO.getPostYear();
             String postMonth = archiveDTO.getPostMonth();

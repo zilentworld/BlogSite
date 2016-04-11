@@ -11,17 +11,6 @@
 						<s:property value="#year"/>
 					</s:a>
 			    	<s:div id="archive-year-%{key}" style="display:none">
-<!-- 							<s:iterator value="value"> -->
-<!-- 									<s:set var="month" value="key" /> -->
-<!-- 									<s:a onclick="javascript:return toggleHidden('archive-month-%{#year}-%{#month}');"> -->
-<!-- 										<s:property value="#month"/> -->
-<!-- 									</s:a> -->
-<!-- 									<s:div id="archive-month-%{#year}-%{#month}" style="display:none"> -->
-<!-- 											<s:iterator value="value"> -->
-<!-- 													<s:property escape="false"/> -->
-<!-- 											</s:iterator> -->
-<!-- 									</s:div> -->
-<!-- 							</s:iterator> -->
 			    		<ul>
 							<s:iterator value="value">
 								<li>

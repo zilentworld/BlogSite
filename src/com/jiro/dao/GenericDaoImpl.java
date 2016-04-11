@@ -77,7 +77,7 @@ public abstract class GenericDaoImpl implements GenericDao {
 
     @Override
     @Transactional
-    public List<?> getList(Class<?> c) { 
+    public List<?> getList(Class<?> c) {
         return getCurrentSession().createCriteria(c).list(); 
     }
     

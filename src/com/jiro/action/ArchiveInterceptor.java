@@ -44,7 +44,7 @@ public class ArchiveInterceptor implements Interceptor {
             sessionMap.put(Constants.SESSION_BLOG_ARCHIVE, null);
             sessionMap.put(Constants.SESSION_MAX_POST, 0);
             sessionMap.put(Constants.SESSION_POST_COUNT, 0);
-        } else if (checkIfArchiveUpdate(sessionMap, currMaxPosts, currPostsCount)) {
+        } else if (checkIfArchiveUpdate(sessionMap, currMaxPosts, currPostsCount) || true) {
             sessionMap.put(Constants.SESSION_BLOG_ARCHIVE, blogPostService.getBlogPostArchive());
             sessionMap.put(Constants.SESSION_MAX_POST, currMaxPosts);
             sessionMap.put(Constants.SESSION_POST_COUNT, currPostsCount);
