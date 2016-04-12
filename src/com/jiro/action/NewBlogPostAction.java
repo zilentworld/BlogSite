@@ -2,6 +2,7 @@ package com.jiro.action;
 
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.interceptor.SessionAware;
 
 import com.jiro.model.BlogPost;
@@ -22,6 +23,8 @@ public class NewBlogPostAction extends ActionSupport implements SessionAware {
     private Map<String, Object> sessionMap;
     private String errMsg;
     private String postType;
+    private String title;
+    private String content;
         
     public BlogPost getBlogPost() {
         return blogPost;
@@ -46,7 +49,23 @@ public class NewBlogPostAction extends ActionSupport implements SessionAware {
     public void setBlogPostService(BlogPostService blogPostService) {
         this.blogPostService = blogPostService;
     }
-    
+            
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public String getErrMsg() {
         return errMsg;
     }
@@ -75,6 +94,7 @@ public class NewBlogPostAction extends ActionSupport implements SessionAware {
     public String execute() throws Exception {
         blogPost.getBlogUser().setUserId((long)sessionMap.get(Constants.SESSION_USERID));
         System.out.println("postType:"+postType);
+        System.out.println("postContent:"+blogPost.getPostContent());
         if("edit".equalsIgnoreCase(postType)) {
             System.out.println("EDIT:postId:"+postId+", blogPost.postId:"+blogPost.getBlogPostId());
             blogPostService.updateNewBlogPost(blogPost);
@@ -89,6 +109,17 @@ public class NewBlogPostAction extends ActionSupport implements SessionAware {
     }
     
     public String createPost() {
+        System.out.println("TEST2:title:"+title+", content:"+content);
+        if(!StringUtils.isEmpty(title)) {
+            if(blogPost == null) 
+                blogPost = new BlogPost();
+            blogPost.setBlogTitle(title);
+        }
+        if(!StringUtils.isEmpty(content)) {
+            if(blogPost == null) 
+                blogPost = new BlogPost();
+            blogPost.setPostContent(content);
+        }
         return SUCCESS;
     }
     

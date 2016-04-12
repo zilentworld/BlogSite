@@ -14,7 +14,7 @@
 	    </s:div>
 	    <s:div id="post-preview-%{blogPostId}">
 	    	<p>
-				<s:property value="postContent.substring(0,postContent.length() > 100 ? 100 : postContent.length())" escape="false" />
+				<s:property value="postContent.substring(0,postContent.length() > 100 ? 100 : postContent.length())"/>
 				<s:if test="postContent.length() > 100">
 					...
 				</s:if>

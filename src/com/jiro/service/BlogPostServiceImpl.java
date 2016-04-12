@@ -136,9 +136,25 @@ public class BlogPostServiceImpl implements BlogPostService {
     private String postContentManipulation(String postContent, String displayFor) {
         String holder = postContent;
 
-        while (holder.contains("<image>") || holder.contains("</image")) {
-            int imgIdxStart = holder.indexOf("<image>");
-            int imgIdxEnd = holder.indexOf("</image>");
+        holder = processImageTag(holder, displayFor);
+        holder = processImgTag(holder, displayFor);
+
+        if ("postContent".equals(displayFor)) {
+            holder = "<p>" + holder.replaceAll("(\\r|\\n|\\r\\n)+", "</p><p>")
+                    + "</p>";
+        }
+
+        return holder;
+    }
+    
+    private String processImageTag(String content, String displayFor) {
+        String holder = content;
+        String openTag = "<image>";
+        String closeTag = "</image>";
+
+        while (holder.contains(openTag) || holder.contains(closeTag)) {
+            int imgIdxStart = holder.indexOf(openTag);
+            int imgIdxEnd = holder.indexOf(closeTag);
             if (imgIdxStart > imgIdxEnd)
                 break;
 
@@ -154,9 +170,28 @@ public class BlogPostServiceImpl implements BlogPostService {
                         + holder.substring(imgIdxEnd + 8);
             }
         }
-        holder = "<p>" + holder.replaceAll("(\\r|\\n|\\r\\n)+", "</p><p>")
-                + "</p>";
+        
+        return holder;
+    }
+    
+    private String processImgTag(String content, String displayFor) {
+        String holder = content;
 
+        String openTag = "<img src=";
+        String closeTag = "/>";
+
+        if ("postPreview".equals(displayFor)) {
+            while (holder.contains(openTag) && holder.contains(closeTag)) {
+                int imgIdxStart = holder.indexOf(openTag);
+                int imgIdxEnd = holder.indexOf(closeTag);
+                if (imgIdxStart > imgIdxEnd)
+                    break;
+    
+                System.out.println("HOLDER:"+holder + ", start:"+imgIdxStart + ", end:"+imgIdxEnd);
+                holder = holder.substring(0, imgIdxStart) + holder.substring(imgIdxEnd + 2);
+            }
+        }
+        
         return holder;
     }
 

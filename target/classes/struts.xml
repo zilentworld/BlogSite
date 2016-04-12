@@ -107,6 +107,34 @@
 			<result name="success" type="imageResult">
 			</result>
 		</action>
+		
+		
+		
+        <action name="upload">
+            <result>/UploadFile.jsp</result>
+        </action>
+        <action name="UploadFile" class="com.jiro.action.UploadFileAction">
+            <param name="filesPath">images</param>
+            <result name="success" type="redirectAction">
+            	<param name="actionName">newBlogPost</param>
+            	<param name="title">${title}</param>
+            	<param name="content">${content}</param>
+            	<param name="postType">${postType}</param>
+            	<param name="postId">${postId}</param>
+            </result>
+            <result name="input" type="redirectAction">
+            	<param name="actionName">newBlogPost</param>
+            	<param name="title">${title}</param>
+            	<param name="content">${content}</param>
+            	<param name="postType">${postType}</param>
+            	<param name="postId">${postId}</param>
+            </result>
+            <interceptor-ref name="defaultStack">
+                <param name="fileUpload.maximumSize">10485760</param>
+                <param name="fileUpload.allowedTypes">image/jpeg</param>
+            </interceptor-ref> 
+        </action>
+		
                 
     </package>
 </struts>

@@ -104,7 +104,7 @@ public class ArchiveDTO implements Comparable<ArchiveDTO> {
         int archive2PostDay = Integer.parseInt(archiveDTO2.getPostDay());
         
         int holder = archive1PostYear - archive2PostYear;
-        if(holder != 0) {
+        if(holder != 0)
             return holder * -1;
         
         holder = archive1PostMonth - archive2PostMonth;
